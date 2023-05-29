@@ -1,12 +1,44 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import WEBSITE from "../Constant/constant";
 import { Link } from "react-router-dom";
 import MenuItem from "./Menu/MenuItem";
 
-function Header(props){
-    return(
-        <>
-            {/* header section strats */}
+import { db } from "../firebase";
+import { signOut,getAuth, onAuthStateChanged } from "firebase/auth";
+
+import { useNavigate } from "react-router-dom";
+
+
+const auth = getAuth();
+
+function Header(props) {
+
+  const [userId,setUserId] = useState(null);
+
+  const [name,setName] = useState(null);
+
+  const navigate = useNavigate();
+
+  const isUserLogin = async () => {
+    const userDetails = JSON.parse(localStorage.getItem("user-details"));
+
+    setUserId(userDetails.uid);
+    setName(userDetails?.firstName);
+  };
+
+  const logout = () => {
+    localStorage.clear();
+    setUserId(null);
+    navigate("/login");
+};
+
+  useEffect(() => {
+    isUserLogin();
+  }, [])
+
+  return (
+    <>
+      {/* header section strats */}
       <header className="header_section">
         <div className="container">
           <nav className="navbar navbar-expand-lg custom_nav-container ">
@@ -29,11 +61,11 @@ function Header(props){
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav  mx-auto ">
-              {
-                WEBSITE?.menu.map((item,key)=>(
-                    <MenuItem key={key} name={item} isCurrent={item == props.selectedMenu ? true : false}/>
-                ))
-              }
+                {
+                  WEBSITE?.menu.map((item, key) => (
+                    <MenuItem key={key} name={item} isCurrent={item == props.selectedMenu ? true : false} />
+                  ))
+                }
               </ul>
               <div className="user_option">
                 <a href="" className="user_link">
@@ -102,21 +134,46 @@ function Header(props){
                     <i className="fa fa-search" aria-hidden="true" />
                   </button>
                 </form>
-                <a href="" className="order_online">
-                  Order Online
-                </a>
+
+                {
+                  userId ? (
+                      null
+                  ) : (
+             
+                    <Link to="/signup" style={{
+                      background:"transparent"
+                    }} className="order_online">
+                      Sign Up
+                    </Link>
+                  )
+                }
+
+                {
+                  userId ? (
+                    <a onClick={()=>logout()} href="#" className="order_online">
+                      Log Out
+                    </a>
+                  ) : (
+             
+                    <Link to="/login" className="order_online">
+                      Log In
+                    </Link>
+                  )
+                }
+
+
               </div>
             </div>
           </nav>
         </div>
       </header>
       {/* end header section */}
-        </>
-    )
+    </>
+  )
 }
 
-Header.defaultProps ={
-    selectedMenu:"home"
+Header.defaultProps = {
+  selectedMenu: "home"
 }
 
 export default Header;
