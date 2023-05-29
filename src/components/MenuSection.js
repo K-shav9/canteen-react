@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WEBSITE from "../Constant/constant";
+
+import db from "../firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function FilterItem(props) {
   return (
@@ -105,11 +108,67 @@ function MenuCard(props) {
 }
 
 function MenuSecton() {
-  const [selectedFoodMenu, setSelectedFoodMenu] = useState("all");
+  const [selectedFoodMenu, setSelectedFoodMenu] = useState("ALL");
+
+  const [menuCategories, setMenuCategories] = useState(null);
+
+  const [menu,setMenu] = useState(null);
+
+  const fetchMenuCategories = async () => {
+    let tmpData = [];
+
+    tmpData.push({
+      id:Math.random(),
+      data:"ALL"
+    })
+
+
+    const q = query(collection(db, "tbl_menu_category"));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+
+      tmpData.push({
+        id:doc.id,
+        data:doc.data().name
+      })
+    });
+
+    setMenuCategories(tmpData);
+
+
+    fetchMenu();
+  }
+
+  const fetchMenu = async () => {
+    let tmpData = [];
+
+    const q = query(collection(db, "tbl_menu"));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+
+      tmpData.push({
+        id:doc.id,
+        data:doc.data()
+      })
+    });
+
+    setMenu(tmpData);
+  }
+
 
   const updateSelectedFoodMenu = (value) => {
     setSelectedFoodMenu(value);
   };
+
+  useEffect(()=>{
+    fetchMenuCategories();
+  },[])
 
   return (
     <>
@@ -120,29 +179,28 @@ function MenuSecton() {
             <h2>Our Menu</h2>
           </div>
           <ul className="filters_menu">
-            {WEBSITE.food_menu_category.map((item, key) => (
+            {menuCategories?.map((item, key) => (
               <FilterItem
                 update={updateSelectedFoodMenu}
-                name={item}
+                name={item.data}
                 key={key}
-                isActive={selectedFoodMenu == item ? true : false}
+                isActive={selectedFoodMenu == item.data ? true : false}
               />
             ))}
           </ul>
           <div className="filters-content">
             <div className="row grid">
-              {WEBSITE.food_menu
-                .filter((item) =>
-                  selectedFoodMenu != "all"
-                    ? item.category == selectedFoodMenu
-                    : item.category != selectedFoodMenu
+              {menu?.filter((item) =>
+                  selectedFoodMenu != "ALL"
+                    ? item.data.category == selectedFoodMenu.toLowerCase()
+                    : item.data.category != selectedFoodMenu.toLowerCase()
                 )
                 .map((item, key) => (
                   <MenuCard
-                    title={item.title}
-                    img={item.img}
-                    desc={item.desc}
-                    price={item.price}
+                    title={item.data.title}
+                    img={item.data.img}
+                    desc={item.data.desc}
+                    price={item.data.price}
                     key={key}
                   />
                 ))}
