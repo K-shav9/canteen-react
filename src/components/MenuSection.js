@@ -112,14 +112,14 @@ function MenuSecton() {
 
   const [menuCategories, setMenuCategories] = useState(null);
 
-  const [menu,setMenu] = useState(null);
+  const [menu, setMenu] = useState(null);
 
   const fetchMenuCategories = async () => {
     let tmpData = [];
 
     tmpData.push({
-      id:Math.random(),
-      data:"ALL"
+      id: Math.random(),
+      data: "ALL"
     })
 
 
@@ -131,8 +131,8 @@ function MenuSecton() {
       console.log(doc.id, " => ", doc.data());
 
       tmpData.push({
-        id:doc.id,
-        data:doc.data().name
+        id: doc.id,
+        data: doc.data().name
       })
     });
 
@@ -153,12 +153,14 @@ function MenuSecton() {
       console.log(doc.id, " => ", doc.data());
 
       tmpData.push({
-        id:doc.id,
-        data:doc.data()
+        id: doc.id,
+        data: doc.data()
       })
     });
 
-    setMenu(tmpData);
+    setTimeout(()=>{
+      setMenu(tmpData)
+    },2000);
   }
 
 
@@ -166,9 +168,9 @@ function MenuSecton() {
     setSelectedFoodMenu(value);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMenuCategories();
-  },[])
+  }, [])
 
   return (
     <>
@@ -190,20 +192,45 @@ function MenuSecton() {
           </ul>
           <div className="filters-content">
             <div className="row grid">
-              {menu?.filter((item) =>
-                  selectedFoodMenu != "ALL"
-                    ? item.data.category == selectedFoodMenu.toLowerCase()
-                    : item.data.category != selectedFoodMenu.toLowerCase()
-                )
-                .map((item, key) => (
-                  <MenuCard
-                    title={item.data.title}
-                    img={item.data.img}
-                    desc={item.data.desc}
-                    price={item.data.price}
-                    key={key}
-                  />
-                ))}
+
+              {
+                menu ?
+                  (
+                    menu?.filter((item) =>
+                      selectedFoodMenu != "ALL"
+                        ? item.data.category == selectedFoodMenu.toLowerCase()
+                        : item.data.category != selectedFoodMenu.toLowerCase()
+                    )
+                      .map((item, key) => (
+                        <MenuCard
+                          title={item.data.title}
+                          img={item.data.img}
+                          desc={item.data.desc}
+                          price={item.data.price}
+                          key={key}
+                        />
+                      ))
+                  ) :
+                  (
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <img style={{
+                        width: "420px"
+                      }} src="https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif" />
+
+                      <img style={{
+                        width: "420px"
+                      }} src="https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif" />
+
+                      <img style={{
+                        width: "420px"
+                      }} src="https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif" />
+                    </div>
+                  )
+              }
             </div>
           </div>
           <div className="btn-box">
