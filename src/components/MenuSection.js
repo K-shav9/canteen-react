@@ -230,9 +230,9 @@ function MenuSecton() {
       })
     });
 
-    setTimeout(() => {
+    // setTimeout(() => {
       setMenu(tmpData)
-    }, 2000);
+    // }, 500);
   }
 
 
@@ -275,11 +275,11 @@ function MenuSecton() {
                     )
                       .map((item, key) => (
                         <MenuCard
-                          itemId={item.id}
-                          title={item.data.title}
-                          url={item.data.url}
-                          desc={item.data.desc}
-                          price={item.data.price}
+                          itemId={item?.id}
+                          title={item.data?.title}
+                          url={item.data?.url}
+                          desc={item?.data?.desc?.slice(0,110)+"..."}
+                          price={item.data?.price}
                           key={key}
                         />
                       ))
@@ -306,9 +306,9 @@ function MenuSecton() {
               }
             </div>
           </div>
-          <div className="btn-box">
+          {/* <div className="btn-box">
             <a href="">View More</a>
-          </div>
+          </div> */}
         </div>
       </section>
       {/* end food section */}

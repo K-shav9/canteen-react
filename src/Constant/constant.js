@@ -1,5 +1,5 @@
 const WEBSITE = {
-  title: "Foody Keshav",
+  title: "Food Corner",
   menu: ["home", "menu", "about", "book table"],
   about: {
     desc: "Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with",
@@ -12,7 +12,7 @@ const WEBSITE = {
     instagram_link: "#",
   },
   more_about:{
-    title:"We Are Feane",
+    title:"Grab Here",
     desc:"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All"
   },
   taglines: [
@@ -44,7 +44,7 @@ const WEBSITE = {
         img: "images/o2.jpg",
       },
   ],
-  food_menu_category:["all","burger","pizza","pasta","fries"],
+  food_menu_category:["all","burger","pizza","pasta","fries",""],
   food_menu:[
     {
       img:"images/f1.png",

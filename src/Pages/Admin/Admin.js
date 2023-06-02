@@ -93,7 +93,7 @@ function ProductModal(props) {
                                 </label>
                                 <select onChange={(e) => setCategory(e.target.value)} class="form-select" aria-label="Default select example">
                                     {
-                                        ["fries", "pasta", "burger", "pizza"].map((item, key) => (
+                                        ["fries", "pasta", "burger", "pizza","momos"].map((item, key) => (
 
                                             item == category ?
                                                 (<option selected key={
@@ -236,7 +236,7 @@ function AddModal() {
                                 <select onChange={(e) => setCategory(e.target.value)} class="form-select" aria-label="Default select example">
                                 <option>Select</option>
                                     {
-                                        ["fries", "pasta", "burger", "pizza"].map((item, key) => (
+                                        ["fries", "pasta", "burger", "pizza","momos"].map((item, key) => (
 
                                             item == category ?
                                                 (<option selected key={
