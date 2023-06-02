@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import "./signup.css";
 
 import db from "../firebase";
-import { getAuth,signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const auth = getAuth();
 
@@ -15,6 +17,25 @@ function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const storeUserDetails = async (uid) => {
+        const q = query(collection(db, "tbl_user"), where("uid", "==", uid));
+
+        const querySnapshot = await getDocs(q);
+        const docId = querySnapshot.docs[0].id;
+        const data = querySnapshot.docs[0].data()
+
+        localStorage.setItem("user-details", JSON.stringify({
+            uid: data.uid,
+            docId: docId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            mobile: data.mobile,
+            address: data.address,
+            email:data.email
+        }));
+        
+    }
 
     const handleSubmit = async () => {
         setIsSignIn(true);
@@ -28,9 +49,8 @@ function LoginPage() {
 
                 alert("Login Success !");
 
-                localStorage.setItem("user-details", JSON.stringify({uid:userCredential.user.uid}));
-
-                navigate("/");
+                storeUserDetails(user);
+                navigate("/home");
             })
             .catch((error) => {
                 alert(error.message);
@@ -96,13 +116,16 @@ function LoginPage() {
                                                 Password
                                             </label>
                                         </div>
-                                        <div className="d-flex justify-content-end pt-3">
+                                        <div className="d-flex align-items-center justify-content-between pt-3">
+                                            <p>Create new account <Link to="/signup">Sign Up</Link></p>
                                             <button type="button" onClick={() => handleSubmit()} className="btn btn-warning btn-lg ms-2">
                                                 {
                                                     isSignIn ? "Logging In..." : "Login"
                                                 }
                                             </button>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>

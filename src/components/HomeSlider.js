@@ -13,11 +13,7 @@ function Tagline(props) {
                       <p>
                       {props.desc}
                       </p>
-                      <div className="btn-box">
-                        <a href="" className="btn1">
-                          Order Now
-                        </a>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>

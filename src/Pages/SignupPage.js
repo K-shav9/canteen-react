@@ -7,7 +7,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-
+import { Link } from "react-router-dom";
 
 
 const auth = getAuth();
@@ -41,7 +41,8 @@ function SignupPage() {
                 firstName: firstName,
                 lastName: lastName,
                 mobile: mobile,
-                address: address
+                address: address,
+                email:email
             });
 
             console.log("Document written with ID: ", docRef.id);
@@ -53,10 +54,11 @@ function SignupPage() {
                 firstName: firstName,
                 lastName: lastName,
                 mobile: mobile,
-                address: address
+                address: address,
+                email:email
             }));
 
-            navigate("/");
+            navigate("/home");
 
         } catch (error) {
             alert(error.message);
@@ -180,7 +182,9 @@ function SignupPage() {
                                                 Password
                                             </label>
                                         </div>
-                                        <div className="d-flex justify-content-end pt-3">
+                                        
+                                        <div className="d-flex align-items-center justify-content-between pt-3">
+                                        <p>Already have an account <Link to="/login">Sign In</Link></p>
                                             <button type="button" onClick={() => handleSubmit()} className="btn btn-warning btn-lg ms-2">
                                                 {
                                                     isSignIn ? "Signing In..." : "Sign Up"

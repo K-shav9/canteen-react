@@ -19,10 +19,10 @@ function Header(props) {
 
   const navigate = useNavigate();
 
-  const isUserLogin = async () => {
+  const isUserLogin = () => {
     const userDetails = JSON.parse(localStorage.getItem("user-details"));
 
-    setUserId(userDetails.uid);
+    setUserId(userDetails?.uid);
     setName(userDetails?.firstName);
   };
 
@@ -42,7 +42,7 @@ function Header(props) {
       <header className="header_section">
         <div className="container">
           <nav className="navbar navbar-expand-lg custom_nav-container ">
-            <Link to="/" className="navbar-brand">
+            <Link to="/home" className="navbar-brand">
               <span>{WEBSITE?.title}</span>
             </Link>
             <button
@@ -63,14 +63,18 @@ function Header(props) {
               <ul className="navbar-nav  mx-auto ">
                 {
                   WEBSITE?.menu.map((item, key) => (
-                    <MenuItem key={key} name={item} isCurrent={item == props.selectedMenu ? true : false} />
+                    <MenuItem userId={userId} key={key} name={item} isCurrent={item == props.selectedMenu ? true : false} />
                   ))
                 }
               </ul>
               <div className="user_option">
-                <a href="" className="user_link">
+                {
+                  userId && 
+                  (
+                    <>
+                    <Link to="/profile" className="user_link">
                   <i className="fa fa-user" aria-hidden="true" />
-                </a>
+                </Link>
                 <Link className="cart_link" to="/cart">
                   <svg
                     version="1.1"
@@ -126,28 +130,11 @@ function Header(props) {
                     <g></g>
                   </svg>
                 </Link>
-                <form className="form-inline">
-                  <button
-                    className="btn  my-2 my-sm-0 nav_search-btn"
-                    type="submit"
-                  >
-                    <i className="fa fa-search" aria-hidden="true" />
-                  </button>
-                </form>
 
-                {
-                  userId ? (
-                      null
-                  ) : (
-             
-                    <Link to="/signup" style={{
-                      background:"transparent"
-                    }} className="order_online">
-                      Sign Up
-                    </Link>
+                <p className="text-white mt-3 mx-3">Welcome {name} ! </p>
+                    </>
                   )
                 }
-
                 {
                   userId ? (
                     <a onClick={()=>logout()} href="#" className="order_online">

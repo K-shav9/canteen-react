@@ -21,7 +21,7 @@ function AboutSection(){
             <p>
               {WEBSITE.more_about.desc}
             </p>
-            <a href="">Read More</a>
+           
           </div>
         </div>
       </div>

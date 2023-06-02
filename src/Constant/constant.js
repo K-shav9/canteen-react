@@ -1,5 +1,5 @@
 const WEBSITE = {
-  title: "Food Keshav",
+  title: "Foody Keshav",
   menu: ["home", "menu", "about", "book table"],
   about: {
     desc: "Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with",
